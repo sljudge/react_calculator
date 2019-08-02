@@ -1,33 +1,66 @@
-.App {
-  text-align: center;
+html, body, #root{
+  height: 100%;
+  width: 100%
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+#root{
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#calculator-body{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: stretch;
+  width: 60%;
+  height: 50%;
+  max-width: 265px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #1e1e1e;
+  background-color: #1e1e1e
 }
-
-.App-link {
-  color: #61dafb;
+.row{
+  height: 14%;
+  margin: 0
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#final-rows{
+  height:28%;
+}
+#fourth-row{
+  width: 75%;
+  height: 100%
+}
+#equals-container{
+  width: 25%;
+  height: 100%
+}
+.button{
+  text-align: center;
+  padding:0;
+}
+.btn{
+  height: 100%;
+  width: 100%
+}
+#display{
+  background-color: #e9e9e9;
+  height: 30%;
+}
+#current-calc{
+  height: 60%;
+  width: 95%;
+  align-self: flex-start;
+  font-size: 1.5rem;
+}
+#current-calc p{
+  overflow-wrap: break-word;
+  width: 100%
+}
+#total{
+  font-size: 1.7rem;
+  justify-content: flex-end;
+  height: 40%;
+  width: 95%;
+  align-self: flex-start;
+  overflow: hidden;
 }
