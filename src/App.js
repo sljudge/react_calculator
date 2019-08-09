@@ -34,6 +34,8 @@ class Button extends React.Component{
 class Calculator extends React.Component{
   constructor(props){
     super(props);
+    this.currentCalc = React.createRef();
+    this.totalDisplay = React.createRef();
     this.state = {
       sum: [],
       currentNumber: '',
@@ -74,11 +76,15 @@ class Calculator extends React.Component{
     this.handleClick = this.handleClick.bind(this)
   };
 
+
   handleClick(e){
+    const currentCalc = this.currentCalc.current
+    const totalDisplay = this.totalDisplay.current
     var sum = this.state.sum
     var currentNumber = this.state.currentNumber
     var lastChar = this.state.lastChar
     var total = this.state.total
+    //Function used when '=' is pressed
     var calculate = function(sum){
       var math = {
         '/': (x,y) => parseFloat(x)/parseFloat(y),
@@ -97,11 +103,21 @@ class Calculator extends React.Component{
           }
         }
       }
-      return sum
+      return sum[0]
     }
 
-    if(sum.reduce( ((total, item) => total+item.length ),0) > 20){
+    //Check length of current calculation
+    if(sum.reduce( ((total, item) => total+item.length ),0) > 40){
       this.setState({total: 'MAX'})
+    }else if(sum.reduce( ((total, item) => total+item.length ),0) > 35){
+      currentCalc.style.fontSize = '1.25rem';
+    }
+    else if(sum.reduce( ((total, item) => total+item.length ),0) < 40){
+      currentCalc.style.fontSize = '1.5rem';
+    }
+
+    //Switchboard
+    if(total === 'MAX'){
       switch(e){
         case 'AC': 
           this.setState({currentNumber: '', sum:[], total: 0, lastChar: ''}); break;
@@ -109,7 +125,7 @@ class Calculator extends React.Component{
           calculate(sum);
           this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
       }
-    }else if(Number.isInteger(e) && sum[0] != '0' || e === '.' && !currentNumber.includes('.') && lastChar != null){
+    } else if(Number.isInteger(e) && sum[0] != '0' || e === '.' && !currentNumber.includes('.') && lastChar != null){
       currentNumber = currentNumber+e
       if('x/-+'.includes(lastChar)){
         sum = sum.concat(currentNumber)
@@ -142,8 +158,23 @@ class Calculator extends React.Component{
           if(lastChar === null){
             this.setState({total: 0, sum:[], lastChar: null, currentNumber: ''}); break;
           }else{
-            calculate(sum)  
-            this.setState({total: sum, sum:[], lastChar: null, currentNumber: ''}); break;
+            calculate(sum)
+            //Check length of total
+            console.log(sum.toString().length)
+            if(sum.toString().length > 22){
+              this.setState({total: 'MAX', sum:sum, lastChar: '', currentNumber: ''}); break;
+            }
+            if(sum.toString().length > 19){
+              totalDisplay.style.fontSize = '1.25rem'
+              console.log('1.25rem')
+              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+            }else if(sum.toString().length > 16){
+              totalDisplay.style.fontSize = '1.5rem';
+              console.log('1.5rem')
+              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+            }else{
+              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+            }
           }
       }
     }
@@ -153,8 +184,8 @@ class Calculator extends React.Component{
     return(
       <div id='calculator-body' className='container'>
         <div id='display' className='row'>
-          <div id='current-calc' className='row'><p>{this.state.sum}</p></div>
-          <div id='total' className='row'>{this.state.total}</div>
+          <div id='current-calc' className='row' ref={this.currentCalc}><p>{this.state.sum}</p></div>
+          <div id='total' className='row' ref={this.totalDisplay}>{this.state.total}</div>
         </div>
         <div id='first-row' className='row'>
           {this.state.interface[0].map( item =>  
