@@ -123,7 +123,7 @@ class Calculator extends React.Component{
           this.setState({currentNumber: '', sum:[], total: 0, lastChar: ''}); break;
         case '=':
           calculate(sum);
-          this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+          this.setState({total: 'MAX', sum:[], lastChar: '', currentNumber: ''}); break;
       }
     } else if(Number.isInteger(e) && sum[0] != '0' || e === '.' && !currentNumber.includes('.') && lastChar != null){
       currentNumber = currentNumber+e
@@ -162,18 +162,14 @@ class Calculator extends React.Component{
             //Check length of total
             console.log(sum.toString().length)
             if(sum.toString().length > 22){
-              this.setState({total: 'MAX', sum:sum, lastChar: '', currentNumber: ''}); break;
-            }
-            if(sum.toString().length > 19){
+              this.setState({total: 'MAX', sum:sum, lastChar: null, currentNumber: ''}); break;
+            }else if(sum.toString().length > 16){
               totalDisplay.style.fontSize = '1.25rem'
               console.log('1.25rem')
-              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
-            }else if(sum.toString().length > 16){
-              totalDisplay.style.fontSize = '1.5rem';
-              console.log('1.5rem')
-              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+              this.setState({total: sum, sum:[], lastChar: null, currentNumber: ''}); break;
             }else{
-              this.setState({total: sum, sum:[], lastChar: '', currentNumber: ''}); break;
+              totalDisplay.style.fontSize = '1.7rem'
+              this.setState({total: sum, sum:[], lastChar: null, currentNumber: ''}); break;
             }
           }
       }
