@@ -103,16 +103,17 @@ class Calculator extends React.Component{
           }
         }
       }
+      console.log(sum)
       return sum[0]
     }
-
+    console.log(sum)
     //Check length of current calculation
-    if(sum.reduce( ((total, item) => total+item.length ),0) > 40){
+    if(sum.toString().length > 43){
       this.setState({total: 'MAX'})
-    }else if(sum.reduce( ((total, item) => total+item.length ),0) > 35){
+    }else if(sum.toString().length > 35){
       currentCalc.style.fontSize = '1.25rem';
     }
-    else if(sum.reduce( ((total, item) => total+item.length ),0) < 40){
+    else if(sum.toString().length < 40){
       currentCalc.style.fontSize = '1.5rem';
     }
 
@@ -142,13 +143,15 @@ class Calculator extends React.Component{
         case 'AC': 
           this.setState({currentNumber: '', sum:[], total: 0, lastChar: null}); break;
         case '/': case 'x': case '+': case '-':
+          console.log(total)
           if(['/', 'x', '+', '-'].includes(lastChar)){
             sum = sum.slice(0, sum.length-1).concat(e);
             this.setState({sum, lastChar: e}); break;
-          }else if(lastChar != null){
+          }else if(lastChar !== null){
             sum = sum.slice(0, sum.length-1).concat(currentNumber).concat(e);
             this.setState({sum, currentNumber: '', lastChar: e}); break;
-          }else if(lastChar == null && total >0){
+          }else if(lastChar === null && total != 0){
+            console.log('heya')
             sum = sum.concat(total).concat(e);
             this.setState({sum, total: 0, lastChar:e}); break;
           }else{
@@ -160,12 +163,10 @@ class Calculator extends React.Component{
           }else{
             calculate(sum)
             //Check length of total
-            console.log(sum.toString().length)
             if(sum.toString().length > 22){
               this.setState({total: 'MAX', sum:sum, lastChar: null, currentNumber: ''}); break;
             }else if(sum.toString().length > 16){
               totalDisplay.style.fontSize = '1.25rem'
-              console.log('1.25rem')
               this.setState({total: sum, sum:[], lastChar: null, currentNumber: ''}); break;
             }else{
               totalDisplay.style.fontSize = '1.7rem'
